@@ -19,10 +19,11 @@ public class SousMarin : MonoBehaviour
 
     void OnMove(InputValue inputMove)
     {
-        Vector2 tempInputOriginal = inputMove.Get<Vector2>();
+        Vector2 tempDirection = inputMove.Get<Vector2>();
+
         _directionDesiree.x = 0;
-        _directionDesiree.y = tempInputOriginal.y;
-        _directionDesiree.z = tempInputOriginal.x;
+        _directionDesiree.y = tempDirection.y;
+        _directionDesiree.z = tempDirection.x;
     }
 
     void OnBoost(InputValue inputBoost)
@@ -39,16 +40,16 @@ public class SousMarin : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 vitesseEtDirectionFinale = _directionDesiree * _vitesse;
-        _rb.AddRelativeForce(vitesseEtDirectionFinale, ForceMode.VelocityChange);
+        Vector3 vitesseFinale = _directionDesiree * _vitesse;
+        _rb.AddRelativeForce(vitesseFinale, ForceMode.VelocityChange);
         
-        _animator.SetFloat("VitesseHorizontale", vitesseEtDirectionFinale.z);
-        _animator.SetFloat("VitesseVerticale", vitesseEtDirectionFinale.y);
+        _animator.SetFloat("VitesseHorizontale", vitesseFinale.z);
+        _animator.SetFloat("VitesseVerticale", vitesseFinale.y);
         
-        bool enMouvementZ = vitesseEtDirectionFinale.z != 0;
+        bool enMouvementZ = Mathf.Abs(vitesseFinale.z) > 0;
         _animator.SetBool("EnMouvementHorizontale", enMouvementZ);
 
-        bool enMouvementY = vitesseEtDirectionFinale.y != 0;
+        bool enMouvementY = Mathf.Abs(vitesseFinale.y) > 0;
         _animator.SetBool("EnMouvementVerticale", enMouvementY);
     }
 }
